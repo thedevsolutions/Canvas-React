@@ -6,12 +6,12 @@ import { apiImagesList } from '../Config'
 
 
 const AllImages = () => {
-
   const [text, setText] = useState("")
   const [file, setFile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [images, setImages] = useState([])
 
+  // function all images from the API
   const getAllImages = () => {
     try {
       setLoading(true);

@@ -8,6 +8,7 @@ import AllImages from './pages/AllImages';
 import './App.css';
 
 function App() {
+  // routes of the application
   return (
     <BrowserRouter>
       <Routes>

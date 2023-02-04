@@ -7,6 +7,7 @@ import html2canvas from 'html2canvas';
 import { apiUploadImage } from '../../Config';
 import './sidebar.css';
 
+// ROUTES LIST OF THE SIDEBAR
 const sidebarNavItems = [
   {
     display: 'Uploads',
@@ -115,6 +116,7 @@ const Sidebar = ({ text, setText, file, setFile, color, setColor }) => {
     setFile(await getBase64(e.target.files[0] || e.target.files))
   }
 
+  // converting image to base64 format
   const getBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -124,43 +126,45 @@ const Sidebar = ({ text, setText, file, setFile, color, setColor }) => {
     });
   }
 
-  return <div className='sidebar'>
-    <div className="sidebar-logo">
-      Animate
-    </div>
-    <div ref={sidebarRef} className="sidebar-menu">
-      <div
-        ref={indicatorRef}
-        className="sidebar-menu-indicator"
-        style={{
-          transform: `translateX(-50%) translateY(${activeIndex * stepHeight}px)`
-        }}
-      ></div>
-      {sidebarNavItems.map((item, index) => (
-        <Link to={item.to} key={index}>
-          <div className={`sidebar-menu-item ${activeIndex === index ? 'active' : ''}`}>
-            <div className="sidebar-menu-item-icon">
-              {item.icon}
+  return (
+    <div className='sidebar'>
+      <div className="sidebar-logo">
+        Animate
+      </div>
+      <div ref={sidebarRef} className="sidebar-menu">
+        <div
+          ref={indicatorRef}
+          className="sidebar-menu-indicator"
+          style={{
+            transform: `translateX(-50%) translateY(${activeIndex * stepHeight}px)`
+          }}
+        ></div>
+        {sidebarNavItems.map((item, index) => (
+          <Link to={item.to} key={index}>
+            <div className={`sidebar-menu-item ${activeIndex === index ? 'active' : ''}`}>
+              <div className="sidebar-menu-item-icon">
+                {item.icon}
+              </div>
+              <div className="sidebar-menu-item-text">
+                {item.display}
+              </div>
             </div>
-            <div className="sidebar-menu-item-text">
-              {item.display}
+          </Link>
+        ))}
+        {location.pathname.split('/')[1] === "" && (
+          <div className="actions">
+            <input type="text" placeholder="add text to show in image" onChange={(e) => setText(e.target.value)} />
+            <div id="color-input-container">
+              <span>Select Color:</span>
+              <span><input type="color" value={color} id="color-input" onChange={(e) => setColor(e.target.value)} disabled={loading} /></span>
             </div>
+            <input type="file" id="file-input" onChange={handleImage} disabled={loading} />
+            <button onClick={makeImage} className="button" disabled={loading}>{loading ? 'Loading' : 'UPLOAD'}</button>
           </div>
-        </Link>
-      ))}
-      {location.pathname.split('/')[1] === "" && (
-        <div className="actions">
-          <input type="text" placeholder="add text to show in image" onChange={(e) => setText(e.target.value)} />
-          <div id="color-input-container">
-            <span>Select Color:</span>
-            <span><input type="color" value={color} id="color-input" onChange={(e) => setColor(e.target.value)} disabled={loading} /></span>
-          </div>
-          <input type="file" id="file-input" onChange={handleImage} disabled={loading} />
-          <button onClick={makeImage} className="button" disabled={loading}>{loading ? 'Loading' : 'UPLOAD'}</button>
-        </div>
-      )}
+        )}
+      </div>
     </div>
-  </div>;
+  );
 };
 
 export default Sidebar;
