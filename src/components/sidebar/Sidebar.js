@@ -52,15 +52,19 @@ const Sidebar = ({ text, setText, file, setFile, color, setColor }) => {
     setActiveIndex(curPath.length === 0 ? 0 : activeItem);
   }, [location]);
 
+
+  // making image from html elements
   const makeImage = async () => {
     if (file) {
       let codeToFile = dataURLtoFile(file);
       uploadFile(codeToFile)
     } else {
+      // converting .container div into png image format
       html2canvas($("#container")[0]).then((canvas) => {
         let image = new Image();
         let data = canvas.toDataURL('image/png');
         image.src = data;
+        // optional checking generated image 
         $(".preview").append(image);
         //Usage example:
         let file = dataURLtoFile(data);
@@ -69,6 +73,8 @@ const Sidebar = ({ text, setText, file, setFile, color, setColor }) => {
     }
   }
 
+
+  // Uploading generated image from text / simple image
   const uploadFile = (file) => {
     setLoading(true);
     const formData = new FormData();
@@ -83,6 +89,8 @@ const Sidebar = ({ text, setText, file, setFile, color, setColor }) => {
         setLoading(false);
       })
   }
+
+  // Converting base64Code of image into real image file
   const dataURLtoFile = (dataUrl) => {
     try {
       let arr = dataUrl.split(','),
@@ -102,9 +110,8 @@ const Sidebar = ({ text, setText, file, setFile, color, setColor }) => {
     }
   }
 
+  // Getting and setting image
   const handleImage = async (e) => {
-    console.log({ file: e.target.files[0] });
-    console.log(await getBase64(e.target.files[0] || e.target.files));
     setFile(await getBase64(e.target.files[0] || e.target.files))
   }
 
